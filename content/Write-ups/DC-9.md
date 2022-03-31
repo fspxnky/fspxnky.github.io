@@ -148,7 +148,7 @@ Moving forward, we can get all the important information we need.
 
 {{<image src="/DC-9/userpass_usersuser.png" position="center">}}
 
-SQL injection UNION attacks: 
+SQL injection UNION attacks that I used: 
 
 | Payload | Description |
 |---------|-------------|
