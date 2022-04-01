@@ -2,7 +2,15 @@
     {{ $paginator := .Paginate .Data.Pages }}
     
     <main class="posts">
-        <h1>{{ .Title }}</h1>
+        <!-- Start of terminal like -->
+        <div class="logo">
+            <span class="logo__mark">></span>
+            <span class="logo__text">ls -l /home/fspxnky/{{ .Title | markdownify }}</span>
+            <span class="logo__cursor"></span>
+        </div>
+        <!-- Stop of terminal like -->
+
+        <p></p>
 
         {{ if .Content }}
             <div class="content">{{ .Content }}</div>
@@ -33,3 +41,5 @@
     {{ partial "pagination-list.html" . }}
     </main>
 {{ end }}
+
+

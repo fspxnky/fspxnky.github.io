@@ -12,15 +12,28 @@
         </div>
 
         <article>
-            <h2 class="post-title"><a href="{{ .Permalink }}">{{ .Title | markdownify }}</a></h2>
+            <!-- Start of terminal like -->
+            <a href="{{ .Permalink }}" style="text-decoration: none;">
+                <div class="logo">
+                    <span class="logo__mark">></span>
+                    <span class="logo__text">cat /home/fspxnky/{{ .Title | markdownify }}.md</span>
+                    <span class="logo__cursor"></span>
+                </div>
+            </a>
+            <!-- Stop of terminal like -->
+
             <!-- Start of word count -->
             {{ $readTime := mul (div (countwords .Content) 220.0) 60 }}
 
             {{ $minutes := math.Floor (div $readTime 60) }}
+
             {{ $seconds := mod $readTime 60 }}
 
             <p>Reading Time: {{ $minutes }} {{ cond (eq $minutes 1) "minute" "minutes" }} and {{ $seconds }} {{ cond (eq $seconds 1) "second" "seconds" }}.</p>
-            <!-- End of word count --> 
+            <!-- End of word count -->
+
+            <!-- Default Heading -->
+            <h2 class="post-title">{{ .Title | markdownify }}</h2>
 
             {{ if .Params.Cover }}
                 <figure class="post-cover">

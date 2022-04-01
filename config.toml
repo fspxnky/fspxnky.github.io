@@ -33,7 +33,7 @@ paginate     = 10
   [languages.en]
     # Change this for tab name 
     title = "fspxnky"
-    subtitle = "Cybersec Blog"
+    subtitle = "Security Blog"
     keywords = ""
     copyright = '<a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a>'
     readOtherPosts = "Read other posts"
@@ -49,8 +49,8 @@ paginate     = 10
 
   [[menu.main]]
     identifier = "writeups"
-    name       = "Write-ups"
-    url        = "/Write-ups"
+    name       = "write-ups"
+    url        = "/write-ups"
 
   [[params.social]]
     name = "tryhackme"
