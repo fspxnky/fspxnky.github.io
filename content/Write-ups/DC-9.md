@@ -2,7 +2,6 @@
 title: "DC-9"
 date: 2022-03-29T17:46:31+08:00
 draft: false
-tags: ['vulnhub']
 ---
 
 DC-9 is another purposely built vulnerable lab to gain experience in the world of penetration testing. The ultimate goal of this challenge is to get root and to read the only flag. DC-9 is a VirtualBox VM built, but I host it on Proxmox Server. To get the VM image, click [here](https://www.vulnhub.com/entry/dc-9,412/).
