@@ -8,7 +8,7 @@ DC-9 is another purposely built vulnerable lab to gain experience in the world o
 
 Thanks to [@DCAU7](https://twitter.com/DCAU7) and the team for creating this machine.
 
-The machine IP address is `192.168.50.108` for me, yours will be different. Do scan your network before proceeding with the attack.
+> The machine IP address is `192.168.50.108` for me, yours will be different. Do scan your network before proceeding with the attack. Do snapshot the machine before proceeding, in case we need to revert it once we are finish or we mess up the machine
 
 ## Scanning
 Let us start by scanning using Nmap to find any opened ports in the machine.
