@@ -48,9 +48,13 @@ paginate     = 10
     # alt = "Your example logo alt text"
 
   [[menu.main]]
-    identifier = "writeups"
-    name       = "write-ups"
-    url        = "/write-ups"
+  #  identifier = "writeups"
+  #  name       = "write-ups"
+  #  url        = "/write-ups"
+
+    identifier = "tags"
+    name       = "Tags"
+    url        = "/tags"
 
   [[params.social]]
     name = "tryhackme"
