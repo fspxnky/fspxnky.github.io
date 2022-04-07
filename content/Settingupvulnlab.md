@@ -1,7 +1,7 @@
 ---
 title: "Setting up Vuln Lab in Proxmox"
 date: 2022-03-28T22:11:55+08:00
-draft: true
+draft: false
 tags: ["Tutorial"]
 ---
 
