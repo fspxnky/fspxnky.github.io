@@ -114,7 +114,7 @@ Black Screen upon installation:
 - TommyBoy
 - Sar
 
-The machine mentioned above will only show black screen upon booting up when i installed it in my proxmox. I initially thought that i did something wrong. **DO NOT WORRY. THE MACHINE IS WORKING. JUST VERIFY IT BY EITHER MANUALLY SCANNING THE NETWORK OR CHECK YOUR DHCP LEASE IN THE ROUTER**  
+The machine mentioned above will only show black screen upon booting up when i installed it in my proxmox. I initially thought that i did something wrong. **DO NOT WORRY**. THE MACHINE IS WORKING. JUST VERIFY IT BY EITHER MANUALLY SCANNING THE NETWORK OR CHECK YOUR DHCP LEASE IN THE ROUTER.  
 
 ### Troubleshooting: Cannot Boot
 
