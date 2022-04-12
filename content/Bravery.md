@@ -1,7 +1,7 @@
 ---
 title: "Bravery"
 date: 2022-03-30T17:46:31+08:00
-draft: true
+draft: false
 tags: ["Vulnhub"]
 ---
 
