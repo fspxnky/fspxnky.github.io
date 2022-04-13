@@ -1,7 +1,7 @@
 ---
 title: "Mercy"
 date: 2022-04-13T16:11:47+08:00
-draft: true
+draft: false
 tags: ["Vulnhub"]
 ---
 
