@@ -187,7 +187,7 @@ Executing this file/binary shows us that it needs 2 parameters: Read and Append.
 After playing with the binary for a few time, i realise that `test` will append anything that you specify in the first file, into the second file. Since we have sudo permission, we can append a root files too. With this, i will inject a new user into the `/etc/passwd/`. I'm going to do this with openssl to encrypt the my clear text password. 
 
 ```
-openssl -l -salt salt password
+openssl passwd -l -salt salt password
 $1$salt$qJH7.N4xYta3aEG/dfqo/0 <-- This is the encrypted password 
 ```
 
