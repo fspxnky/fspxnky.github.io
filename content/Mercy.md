@@ -15,6 +15,8 @@ Feel free to contact the author at https://donavan.sg/blog if you would like to 
 
 ## Scanning 
 
+Let us start by scanning using Nmap to find any opened ports in the machine.
+
 ```
 # Nmap 7.92 scan initiated Wed Apr 13 03:39:13 2022 as: nmap -sS -p- -oN initial.scan 192.168.50.111
 Nmap scan report for 192.168.50.111

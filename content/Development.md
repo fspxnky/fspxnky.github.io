@@ -13,6 +13,8 @@ Feel free to contact the author at https://donavan.sg/blog if you would like to 
 
 ## Scanning
 
+Let us start by scanning using Nmap to find any opened ports in the machine.
+
 ```
 sudo nmap -sS -p- 192.168.50.132 -oN initial.scan
 [sudo] password for kali: 
