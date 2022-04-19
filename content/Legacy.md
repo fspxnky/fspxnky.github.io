@@ -78,7 +78,7 @@ session setup failed: NT_STATUS_INVALID_PARAMETER
 [+] IP: 10.10.10.4:445	Name: 10.10.10.4
 ```
 
-So the next thing I was to scan for any vuln script that I can use for the open ports:
+So the next thing I'll do is to scan for any vuln script that I can use for the open ports:
 
 ```
 nmap -Pn --script=vuln -p 139,445 -oN vuln.scan 10.10.10.4
@@ -131,15 +131,15 @@ Host script results:
 Nmap done: 1 IP address (1 host up) scanned in 48.92 seconds
 ```
 
-If we see closely, the open ports are vulnerable to both `MS08-067` and `MS17-010`. Which we can pull from `Github` for exploit later.
+If we look at the output closely, the open ports are vulnerable to both `MS08-067` and `MS17-010`. Which we can pull from `Github` for exploit later.
 
 ## Initial Foothold and ... Root
 
 #### MS08-067
 
-For this, I will be focusing more on using `MS08-067` exploit. This exploit is quite old and need some tinker here and there a bit before it can really work. I will be using [this](https://github.com/andyacer/ms08_067) exploit to get a shell. 
+I will be focusing more on using `MS08-067` exploit. This exploit is quite old and need some tinker here and there a bit before it can really work. I will be using [this](https://github.com/andyacer/ms08_067) exploit from Github. 
 
-> You'll need to update Kali's Impacket version to 0_9_17 or above
+> You'll need to update Kali's Impacket version to 0_9_17 or above to use this.
 
 Let clone the repo to our working directory and run the exploit: 
 
@@ -306,7 +306,7 @@ Now usually when we run this command on our PC Command Prompt, we will get back 
 First we locate where is our `smbserver.py` and `whoami.exe` in the `kali` system. After locating it, we copy the `whoami.exe` binary to our currenty directory and host the file:
 
 ```
-# Locating those file 
+# Locating smbserver.py and whoami.exe
 
 locate smbserver.py; locate whoami.exe
 /usr/lib/python3/dist-packages/impacket/smbserver.py 
