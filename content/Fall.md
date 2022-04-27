@@ -37,20 +37,22 @@ PORT      STATE  SERVICE
 10443/tcp closed cirrossp
 ```
 
+From the scan, it tells us that several ports is open:
+
+- SSH = Port 22
+- HTTP/HTTPS = Port 80 and 443, 9090
+- Samba = Port 139 and 445
+- MySQL = Port 3306
+
 ## Enumeration 
 
 #### Port 80 and 443 (HTTP CMS Made Simple) 
-
-- searchsploit -x 49345
-- Need log in credentials
-- Has a login page 
-- test.php -> Need use burp  
-
+ 
 Navigating to port 80/443, we are welcome with a webpage which is powered by `CMS Made Simple`. 
 
 {{<image src="/Fall/1.png" position="center" style="border-radius: 8px;">}}
 
-Reading the news, I realise that there's a backdoor, that was highlighted by `qiu`. So i assume there will be one since whoever created that backdoor, will not be bringing it down any time sooner. 
+Reading the news, There's a hint about a backdoor, that was highlighted by `qiu`. So i assume there will be one since whoever created that backdoor, will not be bringing it down any time sooner. 
 
 So fuzzing the page for files/directories give me this return: 
 
@@ -175,7 +177,7 @@ A low privilege shell! :-)
 
 ## Priv Escalation
 
-Entering the `history` command, I can see what `qiu` has entered in his terminal before:
+Looking at the `history` command, I can see what `qiu` has entered in his terminal before:
 
 ```
 [qiu@FALL ~]$ history 
@@ -220,7 +222,7 @@ User qiu may run the following commands on FALL:
 [qiu@FALL ~]$
 ```
 
-... `qiu` basically has all the sudo permission! I guess its an easy root then! 
+`qiu` basically has all the sudo permission! I guess its an easy root then! 
 
 ```
 qiu@FALL ~]$ sudo su root
@@ -249,4 +251,4 @@ Want to find the author? Find the author on Linkedin by rooting other boxes in t
 
 ## Summary 
 
-During the enumeration part I got lost in the rabbit hole sadly.. Im not sure why i spent so much time on Port 9090 XD. Once i found the LFI vulnerability, it was quite easy already. For root, I went thru another rabbit hole by searching for `SUID` file, mySQL enumeration and etc. Learnt that always check the easiest one first before proceeding to that. 
+During the enumeration part I got lost in the rabbit hole sadly.. Im not sure why i spent so much time on Port 9090. Once i found the LFI vulnerability, it was quite easy already. For root, I went thru another rabbit hole by searching for `SUID` file, mySQL enumeration and etc. Learnt that always check the easiest one first before proceeding to that kind of enumeration.  

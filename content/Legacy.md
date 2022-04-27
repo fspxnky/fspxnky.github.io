@@ -5,11 +5,11 @@ draft: false
 tags: ["HackTheBox"] 
 ---
 
+{{<image src="/HTB_Card/Legacy.png" position="center" style="border-radius: 8px;">}}
+
 This machine in HackTheBox is rated Easy. It encourage me to do a vuln scan on the open port. Personally I feel `scanning` is important for this box because if you miss a certain scan, you will miss out the vulnerability. I was stuck for a few hours because I dont know where to look for after the attempt to list the shared directory fail.
 
 Machine IP: 10.10.10.4; Machine Author: ch4p
-
-{{<image src="/HTB_Card/Legacy.png" position="center" style="border-radius: 8px;">}}
 
 ## Scanning 
 
